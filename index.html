@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager</title>
+    <link rel="stylesheet" href="./css/all.css">
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+    
+
+    <!-- ================= LOGIN / REGISTER ================= -->
+    <section class="auth-section" id="authSection">
+
+        <div class="auth-container">
+
+            <div class="auth-header">
+                <h1>Task<span>Flow</span></h1>
+                <p>Manage your tasks. Organize your projects.</p>
+            </div>
+
+            <!-- Login -->
+            <div class="auth-form" id="loginForm">
+
+                <h2>Welcome Back 👋</h2>
+                <p>Login to your account</p>
+
+                <form id="login">
+
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input
+                            type="email"
+                            id="loginEmail"
+                            placeholder="Enter your email"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input
+                            type="password"
+                            id="loginPassword"
+                            placeholder="Enter your password"
+                            required
+                        >
+                    </div>
+
+                    <button type="submit" class="btn primary-btn">
+                        Login
+                    </button>
+
+                </form>
+
+                <p class="switch-auth">
+                    Don't have an account?
+                    <button id="showRegister">Create Account</button>
+                </p>
+
+            </div>
+
+            <!-- Register -->
+            <div class="auth-form hidden" id="registerForm">
+
+                <h2>Create Account 🚀</h2>
+                <p>Start managing your tasks</p>
+
+                <form id="register">
+
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input
+                            type="text"
+                            id="registerName"
+                            placeholder="Enter your name"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input
+                            type="email"
+                            id="registerEmail"
+                            placeholder="Enter your email"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input
+                            type="password"
+                            id="registerPassword"
+                            placeholder="Create a password"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label>Confirm Password</label>
+                        <input
+                            type="password"
+                            id="confirmPassword"
+                            placeholder="Confirm your password"
+                            required
+                        >
+                    </div>
+
+                    <button type="submit" class="btn primary-btn">
+                        Create Account
+                    </button>
+
+                </form>
+
+                <p class="switch-auth">
+                    Already have an account?
+                    <button id="showLogin">Login</button>
+                </p>
+
+            </div>
+
+            <p class="auth-message" id="authMessage"></p>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= DASHBOARD ================= -->
+
+    <section class="dashboard hidden" id="dashboard">
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+
+            <div class="logo">
+                <h2>Task<span>Flow</span></h2>
+            </div>
+
+            <nav>
+
+                <button class="nav-item active" data-view="dashboard">
+                    📊 Dashboard
+                </button>
+
+                <button class="nav-item" data-view="tasks">
+                    📋 My Tasks
+                </button>
+
+                <button class="nav-item" data-view="calendar">
+                    📅 Calendar
+                </button>
+
+                <button class="nav-item" data-view="projects">
+                    📁 Projects
+                </button>
+
+            </nav>
+
+            <div class="sidebar-bottom">
+
+                <button id="themeToggle" class="nav-item">
+                    🌙 Dark Mode
+                </button>
+
+                <button id="logoutBtn" class="nav-item logout">
+                    🚪 Logout
+                </button>
+
+            </div>
+
+        </aside>
+
+
+        <!-- Main Content -->
+        <main class="main-content">
+
+            <!-- Topbar -->
+            <header class="topbar">
+
+                <div>
+                    <h1 id="pageTitle">Dashboard</h1>
+                    <p id="welcomeText">Welcome back!</p>
+                </div>
+
+                <div class="user-area">
+
+                    <div class="notification-wrapper">
+
+                        <button id="notificationBtn" class="icon-btn">
+                            🔔
+                            <span id="notificationCount">0</span>
+                        </button>
+
+                        <div
+                            class="notification-panel hidden"
+                            id="notificationPanel"
+                        >
+                            <h3>Notifications</h3>
+                            <div id="notifications"></div>
+                        </div>
+
+                    </div>
+
+                    <div class="avatar" id="userAvatar">
+                        U
+                    </div>
+
+                </div>
+
+            </header>
+
+
+            <!-- ================= DASHBOARD VIEW ================= -->
+
+            <section id="dashboardView" class="view">
+
+                <!-- Statistics -->
+                <div class="stats-grid">
+
+                    <div class="stat-card">
+                        <div class="stat-icon">📋</div>
+
+                        <div>
+                            <p>Total Tasks</p>
+                            <h2 id="totalTasks">0</h2>
+                        </div>
+                    </div>
+
+
+                    <div class="stat-card">
+                        <div class="stat-icon">⏳</div>
+
+                        <div>
+                            <p>Pending</p>
+                            <h2 id="pendingTasks">0</h2>
+                        </div>
+                    </div>
+
+
+                    <div class="stat-card">
+                        <div class="stat-icon">✅</div>
+
+                        <div>
+                            <p>Completed</p>
+                            <h2 id="completedTasks">0</h2>
+                        </div>
+                    </div>
+
+
+                    <div class="stat-card">
+                        <div class="stat-icon">🔥</div>
+
+                        <div>
+                            <p>Due Soon</p>
+                            <h2 id="dueSoonTasks">0</h2>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <!-- Recent Tasks -->
+                <div class="section-card">
+
+                    <div class="section-header">
+
+                        <div>
+                            <h2>Recent Tasks</h2>
+                            <p>Your latest tasks</p>
+                        </div>
+
+                        <button class="btn primary-btn" id="addTaskBtn">
+                            + Add Task
+                        </button>
+
+                    </div>
+
+                    <div id="recentTasks" class="task-list"></div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= TASKS VIEW ================= -->
+
+            <section id="tasksView" class="view hidden">
+
+                <div class="section-card">
+
+                    <div class="section-header">
+
+                        <div>
+                            <h2>My Tasks</h2>
+                            <p>Manage all your tasks</p>
+                        </div>
+
+                        <button class="btn primary-btn" id="addTaskBtn2">
+                            + Add Task
+                        </button>
+
+                    </div>
+
+
+                    <div class="filters">
+
+                        <input
+                            type="text"
+                            id="searchTask"
+                            placeholder="🔎 Search tasks..."
+                        >
+
+                        <select id="filterStatus">
+
+                            <option value="all">
+                                All Tasks
+                            </option>
+
+                            <option value="pending">
+                                Pending
+                            </option>
+
+                            <option value="completed">
+                                Completed
+                            </option>
+
+                        </select>
+
+                        <select id="filterProject">
+
+                            <option value="all">
+                                All Projects
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div id="allTasks" class="task-list"></div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= CALENDAR VIEW ================= -->
+
+            <section id="calendarView" class="view hidden">
+
+                <div class="section-card">
+
+                    <div class="calendar-header">
+
+                        <button id="prevMonth">
+                            ←
+                        </button>
+
+                        <h2 id="calendarTitle">
+                            October 2026
+                        </h2>
+
+                        <button id="nextMonth">
+                            →
+                        </button>
+
+                    </div>
+
+                    <div class="calendar-weekdays">
+
+                        <div>Sun</div>
+                        <div>Mon</div>
+                        <div>Tue</div>
+                        <div>Wed</div>
+                        <div>Thu</div>
+                        <div>Fri</div>
+                        <div>Sat</div>
+
+                    </div>
+
+                    <div
+                        class="calendar-grid"
+                        id="calendarGrid"
+                    ></div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= PROJECTS VIEW ================= -->
+
+            <section id="projectsView" class="view hidden">
+
+                <div class="section-card">
+
+                    <div class="section-header">
+
+                        <div>
+                            <h2>Projects</h2>
+                            <p>Organize your tasks by project</p>
+                        </div>
+
+                        <button
+                            class="btn primary-btn"
+                            id="addProjectBtn"
+                        >
+                            + Add Project
+                        </button>
+
+                    </div>
+
+                    <div
+                        class="projects-grid"
+                        id="projectsGrid"
+                    ></div>
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </section>
+
+
+    <!-- ================= TASK MODAL ================= -->
+
+    <div class="modal hidden" id="taskModal">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h2 id="taskModalTitle">
+                    Add New Task
+                </h2>
+
+                <button id="closeTaskModal">
+                    ×
+                </button>
+
+            </div>
+
+            <form id="taskForm">
+
+                <input
+                    type="hidden"
+                    id="taskId"
+                >
+
+                <div class="form-group">
+
+                    <label>Task Title</label>
+
+                    <input
+                        type="text"
+                        id="taskTitle"
+                        placeholder="e.g. Build landing page"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>Description</label>
+
+                    <textarea
+                        id="taskDescription"
+                        placeholder="Task description..."
+                    ></textarea>
+
+                </div>
+
+
+                <div class="form-row">
+
+                    <div class="form-group">
+
+                        <label>Project</label>
+
+                        <select id="taskProject">
+
+                            <option value="General">
+                                General
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>Priority</label>
+
+                        <select id="taskPriority">
+
+                            <option value="low">
+                                Low
+                            </option>
+
+                            <option value="medium" selected>
+                                Medium
+                            </option>
+
+                            <option value="high">
+                                High
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>Deadline</label>
+
+                    <input
+                        type="date"
+                        id="taskDeadline"
+                        required
+                    >
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="btn primary-btn full-width"
+                >
+                    Save Task
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= PROJECT MODAL ================= -->
+
+    <div class="modal hidden" id="projectModal">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h2>Add Project</h2>
+
+                <button id="closeProjectModal">
+                    ×
+                </button>
+
+            </div>
+
+            <form id="projectForm">
+
+                <div class="form-group">
+
+                    <label>Project Name</label>
+
+                    <input
+                        type="text"
+                        id="projectName"
+                        placeholder="e.g. Portfolio Website"
+                        required
+                    >
+
+                </div>
+
+                <button
+                    type="submit"
+                    class="btn primary-btn full-width"
+                >
+                    Add Project
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+
+
+
+    <script src="./js/script.js"></script>
+</body>
+</html>
